@@ -93,11 +93,32 @@
 - If some methods in `Base` are to be omitted/errored out in `Derived`, this means the inheritance needs to be rechecked.
 
 Things to remember,
-- Public inheritance means “is-a.” Everything that applies to base classes must also apply to derived classes because every derived class object is a base class object.
+1. Public inheritance means “is-a.” Everything that applies to base classes must also apply to derived classes because every derived class object is a base class object.
 ### Item 33: Avoid hiding inherited names.
 Things to remember,
-- Names in derived classes hide names in base classes. Under public inheritance, this is never desirable.
-- To make hidden names visible again, employ `using` declarations or forwarding functions.
+1. Names in derived classes hide names in base classes. Under public inheritance, this is never desirable.
+2. To make hidden names visible again, employ `using` declarations or forwarding functions.
 ### Item 34: Differentiate between inheritance of interface and inheritance of implementation.
+Things to remember,
+1. Inheritance of interface is different from inheritance of implementation. Under public inheritance, derived classes always inherit base class interfaces.
+2. Pure virtual functions specify inheritance of interface only.
+3. Simple (impure) virtual functions specify inheritance of interface plus inheritance of a default implementation.
+  - However in case the default implementation is wrong for a derived class, forgetting to `override` it might be an issue.
+  - So need implement mechanics to call default implementation *only* when the client *asks* for it.
+    - `public virtual` (pure virtual) interface and `protected` default implementation. The pure `virtual` ensures an implementation *needs* to be provided, while the `protected` means the class can still call the default implementation if required, without it being visible outside the class.
+    - Another way is to define the implementation of the pure `virtual` interface of the base class as well, and call it if required in the derived classes. 
+      - Pro: Cleaner code. 
+      - Con: Only a single protection level. Since interface is public, the default implementation is also public.
+4. Non-virtual functions specify inheritance of interface plus inheritance of a mandatory implementation.
 ### Item 35: Consider alternatives to virtual functions.
+The fundamental advice of this Item is to consider alternatives to virtual functions when searching for a design for the problem you’re trying to solve. Here’s a quick recap of the alternatives we examined:
+- Use the non-virtual interface idiom (NVI idiom), a form of the Template Method design pattern that wraps public non-virtual member functions around less accessible virtual functions.
+- Replace virtual functions with function pointer data members, a stripped-down manifestation of the Strategy design pattern.
+- Replace virtual functions with tr1::function data members, thus allowing use of any callable entity with a signature compatible with what you need. This, too, is a form of the Strategy design pattern.
+- Replace virtual functions in one hierarchy with virtual functions in another hierarchy. This is the conventional implementation of the Strategy design pattern.
+
+Things to remember,
+1. Alternatives to `virtual` functions include the NVI idiom and various forms of the Strategy design pattern. The NVI idiom is itself an example of the Template Method design pattern.
+2. A disadvantage of moving functionality from a member function to a function outside the class is that the nonmember function lacks access to the class’s non-public members.
+3. `tr1::function` objects act like generalized function pointers. Such objects support all callable entities compatible with a given target signature.
 ### Item 36: Never redefine an inherited non-virtual function.
