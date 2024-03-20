@@ -19,7 +19,6 @@ public:
     {
         std::cout << "configureOldPeripheralDevice()" << std::endl;
     }
-
     std::string createSendString(const std::string &message) override { return "<" + message + ">"; }
     std::string createReadString(const std::string &message) override
     {
