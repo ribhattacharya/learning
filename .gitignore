@@ -24,3 +24,8 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Custom Ignores
+*.exe
+*.dSYM
+*.out
