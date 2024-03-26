@@ -58,21 +58,21 @@ public:
 class LibraryBuilder
 {
 public:
-    static std::unique_ptr<ILibrary> FromProtocolVersion(int protocolVersion)
+    static std::shared_ptr<ILibrary> FromProtocolVersion(int protocolVersion)
     {
         if (protocolVersion < 2)
-            return std::make_unique<OldLibrary>();
+            return std::make_shared<OldLibrary>();
         else if (protocolVersion < 5)
-            return std::make_unique<PreviousLibrary>();
+            return std::make_shared<PreviousLibrary>();
         else
-            return std::make_unique<CurrentLibrary>();
+            return std::make_shared<CurrentLibrary>();
     }
 };
 
 class SerialPort
 {
 public:
-    SerialPort(std::unique_ptr<ILibrary> library): _library(std::move(library)) {}
+    SerialPort(std::shared_ptr<ILibrary> lib) : _library(lib) {}
 
     void send(std::string message)
     {
@@ -100,7 +100,7 @@ public:
     }
 
 private:
-    std::unique_ptr<ILibrary> _library;
+    std::shared_ptr<ILibrary> _library;
 };
 
 int run_lab()
@@ -112,8 +112,8 @@ int run_lab()
     auto old_input = std::cin.rdbuf(input.rdbuf());
 
     const int protocolVersion = 1;
-    std::unique_ptr<ILibrary> library = LibraryBuilder::FromProtocolVersion(protocolVersion);
-    SerialPort oldDeviceSerialPort(std::move(library));
+    std::shared_ptr<ILibrary> library = LibraryBuilder::FromProtocolVersion(protocolVersion);
+    SerialPort oldDeviceSerialPort(library);
     oldDeviceSerialPort.send("Hello");
 
     const std::string expectedOutput("configureOldPeripheralDevice()\n"
