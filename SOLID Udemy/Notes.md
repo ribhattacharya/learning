@@ -6,6 +6,7 @@
 - [2. Open/closed principle](#2-openclosed-principle)
 - [3. Liskov substitution principle](#3-liskov-substitution-principle)
 - [4. Interface segregation principle](#4-interface-segregation-principle)
+- [5. Dependency Inversion principle](#5-dependency-inversion-principle)
 
 ## 1. Single responsibility principle
 1. Class should have only 1 reason to change
@@ -44,3 +45,7 @@
 | Inwards:<br>Look inwards, is the module too focused?               	| Outwards: <br>Look outwards, does the module expose too much?   	|
 | Implementation:<br>May be cohesive and satisfy multiple use cases. 	| Interface: <br>Should be minimal and satisfy a single use case. 	|
 
+## 5. Dependency Inversion principle
+1. High level modules should not depend on low level modules, rather both should depend on abstractions.
+2. Abstractions should not leak implementation details. 
+3. Note: Depency Injection is not the same as Dependency Inversion. Dependency Injection is the technique via which we implement dependency injection (which is a principle).
